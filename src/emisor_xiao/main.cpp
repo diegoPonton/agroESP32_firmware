@@ -25,8 +25,9 @@
 // =====================
 // Config global
 // =====================
-String g_device_id = "";
-int    g_sleep_min = DEFAULT_SLEEP_MIN;
+String g_device_id  = "";
+int    g_sleep_min  = DEFAULT_SLEEP_MIN;
+bool   g_relay_on   = false;
 
 // =====================
 // Tipos
@@ -38,6 +39,14 @@ struct THReading { float temp_c; float hum_pct; float pressure_hpa; bool ok; };
 // =====================
 Adafruit_BME280 bme;
 bool bmeFound = false;
+
+// =====================
+// Relevador (SSR en RELAY_PIN)
+// =====================
+void applyRelay(bool on) {
+  g_relay_on = on;
+  digitalWrite(RELAY_PIN, (on == RELAY_ACTIVE_HIGH) ? HIGH : LOW);
+}
 
 // =====================
 // LoRa (RadioLib — ver nota en src/emisor/main.cpp sobre RadioHead vs RadioLib)
@@ -72,6 +81,7 @@ void loadConfig() {
   Preferences prefs;
   prefs.begin("agro", true);
   String nvsId = prefs.getString("device_id", "");
+  g_relay_on = prefs.getBool("relay_on", false);
   if (nvsId.length() > 0) {
     g_device_id = nvsId;
     g_sleep_min = prefs.getInt("sleep_min", DEFAULT_SLEEP_MIN);
@@ -155,6 +165,10 @@ void buildJsonPayload(String &out, const THReading& amb) {
     a["hum_pct"]      = amb.hum_pct;
     a["pressure_hpa"] = amb.pressure_hpa;
   }
+
+  JsonObject r = doc.createNestedObject("relay");
+  r["on"] = g_relay_on;
+
   serializeJson(doc, out);
 }
 
@@ -210,6 +224,14 @@ void processCommand(const String& rawCmd) {
     Serial.println("[CMD] Reiniciando...");
     delay(500); ESP.restart();
   }
+  else if (strcmp(cmdType, "set_relay") == 0) {
+    bool on = cmdDoc["params"]["state"] | false;
+    applyRelay(on);
+    prefs.begin("agro", false);
+    prefs.putBool("relay_on", on);
+    prefs.end();
+    Serial.printf("[CMD] relay -> %s\n", on ? "ON" : "OFF");
+  }
   else {
     Serial.printf("[CMD] Tipo desconocido: %s\n", cmdType);
   }
@@ -238,6 +260,10 @@ void setup() {
   Serial.println("============================================================");
 
   loadConfig();
+
+  pinMode(RELAY_PIN, OUTPUT);
+  applyRelay(g_relay_on);   // restaura el último estado conocido (NVS)
+  Serial.printf("[RELAY] Pin %d -> %s\n", RELAY_PIN, g_relay_on ? "ON" : "OFF");
 
   Serial.println();
   Serial.println("[ SENSOR ]");
@@ -268,6 +294,7 @@ void loop() {
   Serial.println("[ TRANSMISION ]");
   if (amb.ok) Serial.printf("  Ambiente : %.1f C  %.1f%% HR  %.1f hPa\n", amb.temp_c, amb.hum_pct, amb.pressure_hpa);
   else        Serial.println("  Ambiente : sin datos");
+  Serial.printf("  Relay    : %s\n", g_relay_on ? "ON" : "OFF");
   Serial.printf("  Payload  : %d bytes\n", payload.length());
   Serial.printf("  JSON     : %s\n", payload.c_str());
 

@@ -25,5 +25,9 @@
 #define I2C_SCL_PIN    D5
 #define BME280_I2C_ADDR 0x76   // 0x76 en la mayoría de los breakouts; 0x77 en algunos
 
+// --- Actuador: relevador de estado sólido ---
+#define RELAY_PIN        D0
+#define RELAY_ACTIVE_HIGH  true   // false si el módulo SSR activa en LOW
+
 // --- Comportamiento ---
 #define DEFAULT_SLEEP_MIN  10
