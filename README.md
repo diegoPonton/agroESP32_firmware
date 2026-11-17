@@ -20,7 +20,9 @@
 </p>
 
 <p align="center">
-  <img src="docs/images/pcb-3d-iso.png" alt="PCB del nodo AgroESP32 (render 3D)" width="760">
+  <img src="docs/images/nodo-prototipo.webp" alt="Prototipo del nodo AgroESP32: PCB propia con XIAO ESP32-S3 y RFM95W dentro de su carcasa impresa en 3D" width="520">
+  <br>
+  <sub>Prototipo armado: PCB propia con el XIAO ESP32-S3 y el RFM95W, antena de 915 MHz y carcasa impresa en 3D</sub>
 </p>
 
 > **Hardware diseñado por mí.** La PCB del nodo (esquemático, ruteo, Gerbers y BOM) la diseñé en KiCad 10: un carrier de 75 × 51 mm para el Seeed XIAO ESP32-S3 y un módulo LoRa RFM95W, con borneras para conectar sensores y actuadores en campo sin soldar. Los archivos fuente están en [`hardware/`](hardware/).
@@ -214,9 +216,10 @@ Mapa de conexiones, extraído de la netlist del esquemático:
 | BME280 breakout (I2C, 0x76/0x77) | 1 | J2 | Temperatura, humedad y presión atmosférica |
 | Módulo relé de estado sólido (SSR) | 1 | J4 (D0) | Encendido de la bomba de agua |
 | Bomba de agua | 1 | Salida del SSR | Actuador de riego |
-| Antena 915 MHz | 1 | Breakout RFM95W | Enlace LoRa |
+| Antena 915 MHz con conector SMA (DIYmall) | 1 | Breakout RFM95W | Enlace LoRa |
+| Antena 2,4 GHz u.FL (incluida con el XIAO) | 1 | XIAO ESP32-S3 | WiFi / BLE |
 | Batería LiPo 3,7 V, 1 celda | 1 | Conector `BAT` del XIAO | Alimentación autónoma, se carga por USB-C |
-| Carcasa | 1 | — | Encapsulado del nodo para campo |
+| Carcasa impresa en 3D | 1 | — | Encapsulado del nodo para campo |
 
 ### Del diseño al nodo en campo
 
@@ -424,7 +427,5 @@ Para fabricar la placa, subí [`hardware/fabricacion/agroESP32_PCB_gerbers.zip`]
 ## Autor
 
 **Diego Pontón Vaca**: diseño de PCB, firmware y plataforma web.
-
-Proyecto desarrollado junto a **Lizbeth Alcívar Macías**.
 
 Documentación completa del diseño: [`docs/DISENO.md`](docs/DISENO.md) · Estado técnico detallado: [`docs/RESUMEN_TECNICO.md`](docs/RESUMEN_TECNICO.md)
