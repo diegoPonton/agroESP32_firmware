@@ -1,0 +1,6 @@
+"Reference","Value","Footprint","QUANTITY","Description","Datasheet","MPN","Manufacturer"
+"J1","Screw_Terminal_01x02","TerminalBlock:TerminalBlock_MaiXu_MX126-5.0-02P_1x02_P5.00mm","1","Generic screw terminal, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)","","",""
+"J2,J3","Screw_Terminal_01x04","TerminalBlock:TerminalBlock_MaiXu_MX126-5.0-04P_1x04_P5.00mm","2","Generic screw terminal, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)","","",""
+"J4","Screw_Terminal_01x03","TerminalBlock:TerminalBlock_MaiXu_MX126-5.0-03P_1x03_P5.00mm","1","Generic screw terminal, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)","","",""
+"U1","XIAO_ESP32_S3","XIAO_ESP32_S3:MODULE_XIAO_ESP32_S3","1","Seeed Studio XIAO ESP32-S3 Development Board Supports Wi-Fi & Bluetooth","","","Seeed Studio"
+"U2","3073","3073:MODULE_3073","1","Adafruit RFM96W LoRa Radio Transceiver Breakout - 433 MHz | Adafruit Industries 3073","","","Adafruit Industries LLC"
